@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="webpage 1.js" defer></script> -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            background-color: #b8c6db;
+            background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%);
+        }
+
+        .container {
+            border: 5px solid whitesmoke;
+            /* border-top-right-radius: 100px; */
+            /* border-top-left-radius: 10px; */
+            width: 40%;
+            height: 50vh;
+            background: whitesmoke;
+            box-shadow: 1px 5px 20px 5px lightblue;
+        }
+
+        button {
+            padding: 0.5rem;
+            margin-top: 2px;
+            width: 40%;
+            height: 4rem;
+            font-size: 1.7rem;
+            box-shadow: 1px 5px 20px 5px lightblue;
+            background-color: rgb(13, 13, 39);
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            /* border-end-start-radius: 150px; */
+            /* border-end-end-radius: 10px; */
+            /* transform: color 1sec; */
+        }
+        button:hover{
+            color: rgb(114, 114, 51);
+        }
+        .container ul{
+            list-style: none;
+        }
+        .container h2{
+            margin-top: 1rem;
+            /* margin-left: 1rem; */
+            font-size: 2rem;
+            text-align: center;
+        }
+        .container ul li {
+            font-size: 1.5rem;
+            /* margin-left: 1rem; */
+            margin-top: 1.5rem;
+        }
+        .container ul li label{
+            margin-left: 1rem;
+        }
+        .option{
+            margin-left: 2rem;
+        }
+
+        .opt-style:hover{
+            background-color: rgb(13, 13, 39);
+            cursor: pointer;
+            border: 2px solid black;
+            border-radius: 30px;
+            color: white;
+            padding: 7px;
+            /* padding-right: 15px; */
+        }
+        .container li input[type='radio']{
+            transform: scale(1.7);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3 class="q-count">Question1:- </h3>
+        <h2 class="question">Your Question is ?</h2>
+        <ul>
+            <li>
+                <input type="radio" class="option" id="a" name="ans">
+                <label class="optiona opt-style" id="0">Option 1</label>
+            </li>
+            <li>
+                <input type="radio" class="option" id="b" name="ans">
+                <label class="optionb opt-style" id="1">Option 2</label>
+            </li>
+            <li>
+                <input type="radio" class="option" id="c" name="ans">
+                <label class="optionc opt-style" id="2">Option 3</label>
+            </li>
+            <li>
+                <input type="radio" class="option" id="d" name="ans">
+                <label class="optiond opt-style" id="3">Option 4</label>
+            </li>
+        </ul>
+    </div>
+    <button class="btn" id="bton">SUBMIT</button>
+    <script>
+        const quizdata = [{
+    Question: '---What is my age ?---',
+    a: '23',
+    b: '30',
+    c: '40',
+    d: '21',
+    Answer: 'a'
+},
+{
+    Question: '---Where is Taj Mahal ?---',
+    a: 'Mumbai',
+    b: 'Chennai',
+    c: 'Delhi',
+    d: 'Agra',
+    Answer: 'd'
+},
+{
+    Question: '---What is Color of Sky ?---',
+    a: 'Yellow',
+    b: 'Red',
+    c: 'White',
+    d: 'Blue',
+    Answer: 'd'
+},
+{
+    Question: '---What is my last Qualification ?---',
+    a: 'bcom',
+    b: 'b.tech',
+    c: 'MBA',
+    d: 'BBA',
+    Answer: 'b'
+}]
+
+const con = document.querySelector('.container');
+const qcount = document.querySelector('.q-count');
+const ques = document.querySelector('.question');
+const opta = document.querySelector('.optiona');
+const optb = document.querySelector('.optionb');
+const optc = document.querySelector('.optionc');
+const optd = document.querySelector('.optiond');
+const btt  = document.querySelector('.btn');
+const ansopt = document.querySelectorAll('.option');
+// console.log(ques.innerHTML,opta.innerHTML);
+
+let count = 0;
+let score = 0;
+
+updater();
+
+function updater(){
+    deselected();
+    const quiz = quizdata[count];
+
+    qcount.innerHTML = `Question ${count + 1}:-`;
+    ques.innerHTML = quiz.Question;
+    opta.innerHTML = quiz.a;
+    optb.innerHTML = quiz.b;
+    optc.innerHTML = quiz.c;
+    optd.innerHTML = quiz.d;
+}
+
+function getselected(){
+    let ans = undefined;
+
+    ansopt.forEach((answer)=>{
+        if(answer.checked){
+            ans = answer.id;
+        }
+    })
+    return ans;
+}
+
+function deselected(){
+    ansopt.forEach((an)=>{
+        an.checked = false;
+    })
+}
+
+btt.addEventListener('click',()=>{
+    const answers = getselected();
+    // console.log(answers);
+    
+    if(answers){
+        if(answers === quizdata[count].Answer){
+            score++;
+        }
+
+        count++;
+        if(count < quizdata.length){
+            updater();
+        }
+        else{
+            document.body.innerHTML =`<h1>Your score is ${score}/${quizdata.length} question</h1><button onclick="location.reload()">RELOAD</button>`;
+        }
+        document.body.style.background = '#b8c6db';
+        document.body.style.backgroundImage = 'linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%)';
+    }
+    else{
+        document.body.style.background = 'red';
+    }
+})
+    </Script>
+</body>
+
+</html>
+
+
